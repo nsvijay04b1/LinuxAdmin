@@ -1,0 +1,228 @@
+what is RPM
+	RPM (Red Hat Package Manager) is an default open source and most popular package management utility for Red Hat based systems like (RHEL, CentOS and Fedora). The tool allows system administrators and users to install, update, uninstall, query, verify and manage system software packages in Unix/Linux operating systems. The RPM formerly known as .rpm file, that includes compiled software programs and libraries needed by the packages. This utility only works with packages that built on .rpm format.
+
+Some Facts about RPM (RedHat Package Manager)
+	RPM is free and released under GPL (General Public License).
+	RPM keeps the information of all the installed packages under /var/lib/rpm database.
+	RPM is the only way to install packages under Linux systems, if you’ve installed packages using source code, then rpm won’t manage it.
+	RPM deals with .rpm files, which contains the actual information about the packages such as: what it is, from where it comes, dependencies info, version info etc.
+
+There are five basic modes for RPM command
+	Install : It is used to install any RPM package.
+	Remove : It is used to erase, remove or un-install any RPM package.
+	Upgrade : It is used to update the existing RPM package.
+	Verify : It is used to query about different RPM packages.
+	Query : It is used for the verification of any RPM package.
+
+Where to find RPM packages
+	Below is the list of rpm sites, where you can find and download all RPM packages.
+
+	http://rpmfind.net
+	http://www.redhat.com
+	http://freshrpms.net/
+	http://rpm.pbone.net/
+
+Add the EPEL Repository
+
+  Docker is part of Extra Packages for Enterprise Linux (EPEL), which is a community repository of non-standard packages for the RHEL distribution. First, we’ll install the EPEL repository:
+
+		rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+  Then, as a matter of best practice, we’ll update our packages:
+
+		yum update -y
+
+***************************************************************************************************************
+
+
+1. How to Check an RPM Signature Package 
+
+    –checksig (check signature) 
+
+	[root@tecmint]# rpm --checksig pidgin-2.7.9-5.el6.2.i686.rpm
+	pidgin-2.7.9-5.el6.2.i686.rpm: rsa sha1 (md5) pgp md5 OK
+
+2. How to Install an RPM Package
+
+	[root@tecmint]# rpm -ivh pidgin-2.7.9-5.el6.2.i686.rpm
+	Preparing...                ########################################### [100%]
+	1:pidgin                 ########################################### [100%]
+	
+	RPM command and options
+
+ -i : install a package
+ -v : verbose for a nicer display
+ -h: print hash marks as the package archive is unpacked.
+
+3. How to check dependencies of RPM Package before Installing
+
+	[root@tecmint]# rpm -qpR BitTorrent-5.2.2-1-Python2.4.noarch.rpm
+	/usr/bin/python2.4
+	python >= 2.3
+	python(abi) = 2.4
+	python-crypto >= 2.0
+	python-psyco
+	python-twisted >= 2.0
+	python-zopeinterface
+	rpmlib(CompressedFileNames) = 2.6
+
+ RPM command and options
+
+ -q : Query a package
+ -p : List capabilities this package provides.
+ -R: List capabilities on which this package depends..
+
+4. How to Install a RPM Package Without Dependencies
+
+   –nodeps (no dependencies check) 
+
+	[root@tecmint]# rpm -ivh --nodeps BitTorrent-5.2.2-1-Python2.4.noarch.rpm
+	Preparing...                ########################################### [100%]
+	1:BitTorrent             ########################################### [100%]
+
+ The above command forcefully install rpm package by ignoring dependencies errors, but if those dependency files are missing, then the program will not work at all, until you install them.
+
+5. How to check an Installed RPM Package
+
+	[root@tecmint]# rpm -q BitTorrent
+	BitTorrent-5.2.2-1.noarch
+
+6. How to List all files of an installed RPM package
+
+   -ql (query list) 
+
+	[root@tecmint]# rpm -ql BitTorrent
+	/usr/bin/bittorrent
+	/usr/bin/bittorrent-console
+	/usr/bin/bittorrent-curses
+	/usr/bin/bittorrent-tracker
+	
+7. How to List Recently Installed RPM Packages
+
+  -qa (query all) 
+
+	[root@tecmint]# rpm -qa --last
+	BitTorrent-5.2.2-1.noarch                     Tue 04 Dec 2012 05:14:06 PM BDT
+	pidgin-2.7.9-5.el6.2.i686                     Tue 04 Dec 2012 05:13:51 PM BDT
+	cyrus-sasl-devel-2.1.23-13.el6_3.1.i686       Tue 04 Dec 2012 04:43:06 PM BDT
+
+8. How to List All Installed RPM Packages
+
+	[root@tecmint]# rpm -qa
+	initscripts-9.03.31-2.el6.centos.i686
+	polkit-desktop-policy-0.96-2.el6_0.1.noarch
+	thunderbird-17.0-1.el6.remi.i686
+
+9. How to Upgrade a RPM Package
+ 
+    “–U” (upgrade) - not only upgrade the latest version , also maintain the backup of the older package so that in case if the newer upgraded package does not run the previously installed package can be used again.
+
+	[root@tecmint]# rpm -Uvh nx-3.5.0-2.el6.centos.i686.rpm
+	Preparing...                ########################################### [100%]
+	1:nx                     ########################################### [100%]
+
+10. How to Remove a RPM Package
+
+   -e (erase) 
+
+	[root@tecmint]# rpm -evv nx
+
+11. How to Remove an RPM Package Without Dependencies
+
+	The –nodeps (Do not check dependencies) option forcefully remove the rpm package from the system. But keep in mind removing particular package may break other working applications.
+
+	[root@tecmint]# rpm -ev --nodeps vsftpd
+
+12. How to Query a file that belongs which RPM Package
+
+   -qf (query file) option will show you which file is own by which package .
+
+	[root@tecmint]# rpm -qf /usr/bin/htpasswd
+	httpd-tools-2.2.15-15.el6.centos.1.i686
+
+13. How to Query a Information of Installed RPM Package
+
+   -qi (query info) option will print the available information of the installed package.
+
+	[root@tecmint]# rpm -qi vsftpd
+	Name        : vsftpd				   Relocations: (not relocatable)
+	Version     : 2.2.2				   Vendor: CentOS
+	Release     : 11.el6				   Build Date: Fri 22 Jun 2012 01:54:24 PM BDT
+	Install Date: Mon 17 Sep 2012 07:55:28 PM BDT      Build Host: c6b8.bsys.dev.centos.org
+	Group       : System Environment/Daemons           Source RPM: vsftpd-2.2.2-11.el6.src.rpm
+	Size        : 351932                               License: GPLv2 with exceptions
+	Signature   : RSA/SHA1, Mon 25 Jun 2012 04:07:34 AM BDT, Key ID 0946fca2c105b9de
+	Packager    : CentOS BuildSystem <http://bugs.centos.org>
+	URL         : http://vsftpd.beasts.org/
+	Summary     : Very Secure Ftp Daemon
+	Description :
+	vsftpd is a Very Secure FTP daemon. It was written completely from
+	scratch.
+
+14. Get the Information of RPM Package Before Installing
+
+   -qip (query info package) will print the information of a package sqlbuddy.
+
+	[root@tecmint]# rpm -qip sqlbuddy-1.3.3-1.noarch.rpm
+	Name        : sqlbuddy                     Relocations: (not relocatable)
+	Version     : 1.3.3                        Vendor: (none)
+	Release     : 1                            Build Date: Wed 02 Nov 2011 11:01:21 PM BDT
+	Install Date: (not installed)              Build Host: rpm.bar.baz
+	Group       : Applications/Internet        Source RPM: sqlbuddy-1.3.3-1.src.rpm
+	Size        : 1155804                      License: MIT
+	Signature   : (none)
+	Packager    : Erik M Jacobs
+	URL         : http://www.sqlbuddy.com/
+	Summary     : SQL Buddy â Web based MySQL administration
+	Description :
+	SQLBuddy is a PHP script that allows for web-based MySQL administration.
+
+15. How to Query documentation of Installed RPM Package
+
+    -qdf (query document file) will display the manual pages related to vmstat package.
+
+	[root@tecmint]# rpm -qdf /usr/bin/vmstat
+	/usr/share/doc/procps-3.2.8/BUGS
+	/usr/share/doc/procps-3.2.8/COPYING
+	/usr/share/doc/procps-3.2.8/COPYING.LIB
+	/usr/share/doc/procps-3.2.8/FAQ
+	/usr/share/doc/procps-3.2.8/NEWS
+	/usr/share/doc/procps-3.2.8/TODO
+
+16. How to Verify a RPM Package
+
+    -Vp (verify package) is used to verify a package.
+
+	[root@tecmint downloads]# rpm -Vp sqlbuddy-1.3.3-1.noarch.rpm
+	S.5....T.  c /etc/httpd/conf.d/sqlbuddy.conf
+
+17. How to Verify all RPM Packages
+
+	[root@tecmint]# rpm -Va
+	S.5....T.  c /etc/rc.d/rc.local
+	.......T.  c /etc/dnsmasq.conf
+	.......T.    /etc/ld.so.conf.d/kernel-2.6.32-279.5.2.el6.i686.conf
+	S.5....T.  c /etc/yum.conf
+	S.5....T.  c /etc/yum.repos.d/epel.repo
+
+18. How to Import an RPM GPG key
+
+  To verify RHEL/CentOS/Fedora packages, you must import the GPG key. To do so, execute the following command. It will import CentOS 6 GPG key.
+
+	[root@tecmint]# rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+19. How to List all Imported RPM GPG keys
+
+	[root@tecmint]# rpm -qa gpg-pubkey*
+	gpg-pubkey-0608b895-4bd22942
+	gpg-pubkey-7fac5991-4615767f
+	gpg-pubkey-0f2672c8-4cd950ee
+	
+20. How To rebuild Corrupted RPM Database
+
+  Sometimes rpm database gets corrupted and stops all the functionality of rpm and other applications on the system. So, at the time we need to rebuild the rpm database and restore it with the help of following command.
+
+	[root@tecmint]# cd /var/lib
+	[root@tecmint]# rm __db*
+	[root@tecmint]# rpm --rebuilddb
+	[root@tecmint]# rpmdb_verify Packages
