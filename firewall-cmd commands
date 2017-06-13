@@ -1,0 +1,74 @@
+Useful ‘FirewallD’ Rules to Configure and Manage Firewall in CentOS Linux Server 7(Core) 
+
+You Can also Configure in Redhat 7, Fedora Server, Oracle Linux, Cloud Linux.
+
+first check whether Firewalld service Enabled and Running
+Step1 :- systemctl status firewalld
+Step2 :- firewall-cmd --get-active-zones firewall-cmd --get-services
+Step3 :- firewall-cmd --zone=public --list-all
+
+Adding and Removing Ports in Firewalld
+Step4 :- firewall-cmd --permanent --zone=public --add-port=80/tcp
+Step5 :- firewall-cmd --zone=public --remove-port=80/tcp
+Step6 :- firewall-cmd --zone=public --list-ports
+
+Adding and Removing Services in Firewalld
+Step7 :- firewall-cmd --zone=public --list-services
+Step8 :- firewall-cmd --zone=public --add-service=ftp
+Step9 :- firewall-cmd --zone=public --list-services
+Step10 :- firewall-cmd --zone=public --remove-service=ftp
+
+
+Block Incoming and Outgoing Packets (Panic Mode)
+Step11 :- firewall-cmd --panic-on
+Step12 :- ping google.com -c 1
+Step13 :- firewall-cmd --query-panic
+Step14 :- firewall-cmd --panic-off
+Step15 :- ping google.com -c 1
+
+Masquerading IP Address(NAT)
+Step16 :- firewall-cmd --zone=external --query-masquerade
+Step17 :- firewall-cmd --zone=external --add-masquerade
+Step18 :- firewall-cmd --zone=external --add-forward-port=port=22:proto=tcp:toport=2222:toaddr=192.168.0.132
+Step19 :- firewall-cmd --zone=external --list-all
+
+How to Block and Enable ICMP
+Step20 :- firewall-cmd --get-icmptypes
+Step21 :- firewall-cmd --zone=public --query-icmp-block=echo-reply
+Step22 :- firewall-cmd --zone=public --add-icmp-block=echo-reply
+Step23 :- firewall-cmd --zone=public –list-all 
+
+Adding and Removing Chain using Direct Interface
+Step24 :- firewall-cmd --direct --get-rules ipv4 filter IN_public_allow
+Step25 :- firewall-cmd --direct --add-rule ipv4 filter IN_public_allow 
+0 -m tcp -p tcp --dport 25 -j ACCEPT
+Step26 :- firewall-cmd --direct --remove-rule ipv4 filter IN_public_allow 
+0 -m tcp -p tcp --dport 25 -j ACCEPT
+
+Firewalld Lockdown Rules
+Step27 :- vim /etc/firewalld/firewalld.conf
+Step28 :- firewall-cmd --reload
+Step29 :- firewall-cmd --query-lockdown
+Step30 :- firewall-cmd --lockdown-on
+Step31 :- firewall-cmd --lockdown-off
+
+Enabling Fail2ban-firewalld Support
+Step32 :- yum install fail2ban-firewalld -y
+Step33 :- systemctl start fail2ban
+Step34 :- systemctl enable fail2ban
+Step35 :- ln –s /usr/lib/systemd/system/fail2ban.service /etc/systemd/system/multi-user.target.wants/fail2ban.service
+
+Adding & Blocking IP Addresses
+Step36 :- firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="192.168.0.254" accept' 
+Step37 :- firewall-cmd --zone=public --list-all
+Step38 :- firewall-cmd --zone=public --remove-rich-rule='rule family="ipv4" source address="192.168.0.254" accept'
+Step39 :- firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="192.168.0.250" reject'
+Step40 :- firewall-cmd --zone=public --list-all
+
+
+NOTE :- For Any Clarification Please Below
+
+
+
+video @  https://www.youtube.com/watch?v=mF2IwthpvT4
+
